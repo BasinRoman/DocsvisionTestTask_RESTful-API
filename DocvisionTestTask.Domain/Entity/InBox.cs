@@ -10,7 +10,7 @@ namespace DocvisionTestTask.Domain.Entity
     {
         public int Id { get; set; }
         public string Email_subject { get; set; } = string.Empty;
-        public string Email_date { get; set; } = string.Empty;
+        public DateTime Email_date { get; set; } = DateTime.MinValue;
         public string Email_from { get; set; } = string.Empty;
         public string Email_to { get; set; } = string.Empty;
         public string Email_body { get; set; } = string.Empty;

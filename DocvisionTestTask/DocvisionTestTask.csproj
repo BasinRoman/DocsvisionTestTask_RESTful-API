@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
     <ProjectReference Include="..\DocvisionTestTask.DAL\DocvisionTestTask.DAL.csproj" />
   </ItemGroup>
 

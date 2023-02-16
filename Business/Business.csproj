@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Implementations\" />
-    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DocvisionTestTask.DAL\DocvisionTestTask.DAL.csproj" />
+    <ProjectReference Include="..\DocvisionTestTask.Domain\DocvisionTestTask.Domain.csproj" />
   </ItemGroup>
 
 </Project>
