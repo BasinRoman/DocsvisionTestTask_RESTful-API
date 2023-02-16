@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace DocvisionTestTask.Domain.Response
 {
-    public class BaseResponse<T> : IBaseResponse<T>
+    public interface IBaseResponse<T>
     {
-        public string Description { get; set; }
-        public StatusCode statusCode { get; set; }
-        public T Data { get; set; }
+        string Description { get; }
+        StatusCode statusCode { get; }
+        T Data { get; }
     }
 }

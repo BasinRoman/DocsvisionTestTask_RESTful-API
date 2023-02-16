@@ -8,6 +8,7 @@ namespace DocvisionTestTask.Domain.Model
 {
     internal class UserModel
     {
-
+        public string login { get; set; }
+        public string password { get; set; }
     }
 }

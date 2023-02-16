@@ -11,6 +11,6 @@ namespace DocvisionTestTask.DAL.Interfaces
         Task<bool> Create(T entity);
         Task<T> Get(int id);
         Task<IEnumerable<T>> Select();
-       // IQueryable<T> GetAll();
+        //IQueryable<T> GetAll();
     }
 }

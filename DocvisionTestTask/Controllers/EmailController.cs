@@ -17,7 +17,6 @@ namespace DocvisionTestTask.Controllers
         {
             _emailService = emailService;
         }
-
         //Принимаем json и отправляем в inbox
         [HttpPost]        
         public async Task<IActionResult> CreateEmail(EmailModel email)
@@ -27,18 +26,11 @@ namespace DocvisionTestTask.Controllers
                 var resposne = await _emailService.CreateNewInBox(email);
                 if (resposne.statusCode == Domain.Entity.StatusCode.ok)
                 {
-                    return ;
+                    return null ;
                 }
-                
-                return ;
+                return null;
             }
-            return ;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUsers(User user)
-        {
-            ///
-        }
+            return null;
+        }   
     }
 }

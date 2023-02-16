@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Implementations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DocvisionTestTask.DAL\DocvisionTestTask.DAL.csproj" />
     <ProjectReference Include="..\DocvisionTestTask.Domain\DocvisionTestTask.Domain.csproj" />
   </ItemGroup>
