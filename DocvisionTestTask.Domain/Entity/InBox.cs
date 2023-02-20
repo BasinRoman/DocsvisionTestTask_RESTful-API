@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DocvisionTestTask.Domain.Entity
 {
-    public class InBox
-    {
-        public int Id { get; set; }
-        public string Email_subject { get; set; } = string.Empty;
-        public DateTime Email_date { get; set; } = DateTime.MinValue;
-        public string Email_from { get; set; } = string.Empty;
-        public string Email_to { get; set; } = string.Empty;
-        public string Email_body { get; set; } = string.Empty;
-        
-        //ForeignKey
-        public int User_id { get; set; }
+    public class inBox
+    {  
+        public int id { get; set; }
+        public string emailSubject { get; set; } = string.Empty;
+        public DateTime emailDate { get; set; } = DateTime.MinValue;
+        public string emailFrom { get; set; } = string.Empty;
+        public string emailTo { get; set; } = string.Empty;
+        public string emailBody { get; set; } = string.Empty;
+
+        //ForeignKey 
+        public int userId { get; set; }
         public User User { get; set; }
     }
 }

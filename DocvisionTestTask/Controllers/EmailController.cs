@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DocvisionTestTask.Domain.Entity;
 using Microsoft.OpenApi.Writers;
-
+using Microsoft.AspNetCore.Http.HttpResults;
+using Business.Implementations;
 
 namespace DocvisionTestTask.Controllers
 {
@@ -17,20 +18,23 @@ namespace DocvisionTestTask.Controllers
         {
             _emailService = emailService;
         }
+
         //Принимаем json и отправляем в inbox
-        [HttpPost]        
-        public async Task<IActionResult> CreateEmail(EmailModel email)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmailModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost]
+        public async Task<ActionResult<EmailModel>> CreateEmail(EmailModel email)
         {
-            if (ModelState.IsValid)
+            if (email != null)
             {
                 var resposne = await _emailService.CreateNewInBox(email);
                 if (resposne.statusCode == Domain.Entity.StatusCode.ok)
                 {
-                    return null ;
+                    return Ok($"{resposne.Description}");
                 }
-                return null;
+                return BadRequest("Ошибка при отправке письма");
             }
-            return null;
-        }   
+            return BadRequest("Ошибка при отправке письма. Пустое сообщение.");
+        }
     }
 }

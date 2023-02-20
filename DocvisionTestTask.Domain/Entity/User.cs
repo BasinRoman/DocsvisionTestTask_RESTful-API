@@ -1,11 +1,22 @@
-﻿namespace DocvisionTestTask.Domain.Entity
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace DocvisionTestTask.Domain.Entity
 {
     public class User
     {
-        public int Id { get; set; }
+        
+        public int id { get; set; }
+        
         public string Login { get; set; }
         public string Password { get; set; }
+
+        // Связи
+        //
+        // Связь для таблицы Profile
         public Profile Profile { get; set; }
-        public InBox InBox { get; set; }
+
+        // Связь для таблицы Inbox 
+        public ICollection<inBox> inBox { get; set; }
     }
 }

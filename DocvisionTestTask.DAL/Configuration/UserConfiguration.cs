@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,24 +15,23 @@ namespace DocvisionTestTask.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.id).ValueGeneratedOnAdd();
+            
             builder.Property(x => x.Login).HasMaxLength(25);
             builder.Property(x => x.Password).HasMaxLength(100);
             
             builder.HasOne(x => x.Profile).WithOne(x => x.User)
-                                          .HasPrincipalKey<User>(x => x.Id)
+                                          .HasPrincipalKey<User>(x => x.id)
                                           .OnDelete(DeleteBehavior.Cascade).IsRequired();
-            builder.HasOne(x => x.InBox).WithOne(x => x.User)
-                                        .HasPrincipalKey<User>(x => x.Id)
-                                        .OnDelete(DeleteBehavior.Cascade).IsRequired();
+            builder.HasMany(x => x.inBox).WithOne(x => x.User);
 
-            //Создадим дефолтного юзера
-            builder.HasData(new User
-            {
-                Id = 1,
-                Login = "Roman",
-                Password = HashPassword.Hash("123"),
-            });
+            //Предопределенные пользователи
+            builder.HasData(new User { id = 1, Login = "Shared_account", Password = HashPassword.Hash("123")} );
+            builder.HasData(new User { id = 2, Login = "Dmitry", Password = HashPassword.Hash("234") });
+            builder.HasData(new User { id = 3, Login = "Igor", Password = HashPassword.Hash("345") });
+            builder.HasData(new User { id = 4, Login = "Olga", Password = HashPassword.Hash("456") });
+            builder.HasData(new User { id = 5, Login = "Roman", Password = HashPassword.Hash("567") });
+            builder.HasData(new User { id = 6, Login = "Oleg", Password = HashPassword.Hash("678") });
         }
     }
 }

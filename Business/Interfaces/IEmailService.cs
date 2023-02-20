@@ -11,6 +11,6 @@ namespace Business.Interfaces
 {
     public interface IEmailService
     {
-        Task<IBaseResponse<InBox>> CreateNewInBox(EmailModel email);
+        Task<IBaseResponse<inBox>> CreateNewInBox(EmailModel email);
     }
 }

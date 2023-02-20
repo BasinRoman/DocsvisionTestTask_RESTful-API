@@ -9,8 +9,6 @@ namespace DocvisionTestTask.DAL.Interfaces
     public interface IBaseRepository<T>
     {
         Task<bool> Create(T entity);
-        Task<T> Get(int id);
-        Task<IEnumerable<T>> Select();
-        //IQueryable<T> GetAll();
+        IEnumerable<T> Select();
     }
 }

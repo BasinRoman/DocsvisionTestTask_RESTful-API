@@ -17,15 +17,16 @@ namespace Business.Implementations
         {
             _userRepository = userRepository;
         }
-        public async Task<IBaseResponse<IEnumerable<User>>> GetAllUsers()
+        public IBaseResponse<IEnumerable<User>> GetAllUsers()
         {
             var baseResponse = new BaseResponse<IEnumerable<User>>();
             try
             {
-                var UserCollection = await _userRepository.Select();
+                var UserCollection = _userRepository.Select();
                 baseResponse.Data = UserCollection;
+
                 baseResponse.statusCode = StatusCode.ok;
-                baseResponse.Description = "A try to get all users: succesful";
+                baseResponse.Description = "Попытка обращения к базу: успешно";
                 return baseResponse;
             }
             catch (Exception exception)
@@ -33,7 +34,28 @@ namespace Business.Implementations
                 return new BaseResponse<IEnumerable<User>>()
                 {
                     Description = exception.Message,
-                    statusCode = StatusCode.InternalServiceError
+                    statusCode = StatusCode.internalServiceError
+                };
+            }
+        }
+
+        public  async Task<IBaseResponse<User>> GetUserByFNameLame(string FNameLName)
+        {
+            var baseResponse = new BaseResponse<User>();
+            try
+            {
+                var User = await _userRepository.GetUserByFNameLName(FNameLName);
+                baseResponse.Data = User;
+                baseResponse.statusCode = StatusCode.ok;
+                baseResponse.Description = "Получатель найден.\n";
+                return baseResponse;
+            }
+            catch (Exception exception)
+            {
+                return new BaseResponse<User>()
+                {
+                    Description = $"Не удалось найти получателя по причине: {exception.Message}\nПисьмо было отправлено на общий почтовый ящик.\n",
+                    statusCode = StatusCode.internalServiceError
                 };
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Business.Interfaces;
+using DocvisionTestTask.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocvisionTestTask.Controllers
@@ -13,12 +14,19 @@ namespace DocvisionTestTask.Controllers
             _userService = userService;
         }
 
+        //Получаем список всех записей таблицы Users
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetProfiles()
         {
-            var response = _userService.GetAllUsers();
-            //тут нужно вернуть json
+            var response =  _userService.GetAllUsers(); 
+            if (response.statusCode != Domain.Entity.StatusCode.internalServiceError)
+            {
+                return null;
+            }
             return null;
         }
+        
     }
 }

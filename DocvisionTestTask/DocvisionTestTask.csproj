@@ -22,4 +22,12 @@
     <ProjectReference Include="..\DocvisionTestTask.DAL\DocvisionTestTask.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\C#\DocvisionTestTask\DocvisionTestTask\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\C#\DocvisionTestTask\DocvisionTestTask\.editorconfig" />
+  </ItemGroup>
+
 </Project>

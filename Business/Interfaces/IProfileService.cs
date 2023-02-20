@@ -1,4 +1,5 @@
 ﻿using DocvisionTestTask.Domain.Entity;
+using DocvisionTestTask.Domain.Model;
 using DocvisionTestTask.Domain.Response;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Business.Interfaces
 {
-    public interface IUserService
+    public interface IProfileService
     {
-        IBaseResponse<IEnumerable<User>> GetAllUsers();
-        Task<IBaseResponse<User>> GetUserByFNameLame(string FNameLName);
+        IBaseResponse<List<ProfileModel>> GetAllProfiles();
     }
 }

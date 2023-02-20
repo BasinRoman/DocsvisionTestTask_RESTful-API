@@ -9,6 +9,6 @@ namespace DocvisionTestTask.Domain.Entity
     public enum StatusCode
     {
         ok = 200,
-        InternalServiceError = 500
+        internalServiceError = 500
     }
 }

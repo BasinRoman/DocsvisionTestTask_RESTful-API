@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DocvisionTestTask.Domain.Model
 {
-    internal class UserModel
+    public class ProfileModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
     }

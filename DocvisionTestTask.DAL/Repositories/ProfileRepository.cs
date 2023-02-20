@@ -5,29 +5,27 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DocvisionTestTask.DAL.Repositories
 {
-    public class InBoxRepository : IInBoxRepository
+    public class ProfileRepository : IProfileRepository
     {
         public readonly ApplicationDbContext _dbContext;
-        public InBoxRepository(ApplicationDbContext dbContext)
+        public ProfileRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Create(inBox entity)
-        {
-            await _dbContext.inBox.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
-
-        public IEnumerable<inBox> Select()
+        public Task<bool> Create(Profile entity)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Profile> Select()
+        {
+            return _dbContext.Profile.Include(x => x.User).ToList();
         }
     }
 }

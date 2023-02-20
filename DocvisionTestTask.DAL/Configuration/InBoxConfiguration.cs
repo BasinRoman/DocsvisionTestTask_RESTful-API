@@ -3,25 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DocvisionTestTask.DAL.Configuration
 {
-    internal class InBoxConfiguration : IEntityTypeConfiguration<InBox>
+    internal class inBoxConfiguration : IEntityTypeConfiguration<inBox>
     {
-        public void Configure(EntityTypeBuilder<InBox> builder)
+        public void Configure(EntityTypeBuilder<inBox> builder)
         {
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Email_subject).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Email_date).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Email_from).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Email_to).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Email_body).HasMaxLength(50).IsRequired();
-
-            //InBox для дефолтного юзера
-            builder.HasData(new InBox {Id = 1, User_id = 1});
+            builder.Property(x => x.id).ValueGeneratedOnAdd();    
+            builder.Property(x => x.emailSubject).HasMaxLength(300).IsRequired();
+            builder.Property(x => x.emailDate).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.emailFrom).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.emailTo).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.emailBody).HasMaxLength(1500).IsRequired();
         }
     }
 }

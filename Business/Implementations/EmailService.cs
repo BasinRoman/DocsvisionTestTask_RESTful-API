@@ -3,49 +3,62 @@ using DocvisionTestTask.DAL.Interfaces;
 using DocvisionTestTask.Domain.Entity;
 using DocvisionTestTask.Domain.Model;
 using DocvisionTestTask.Domain.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Business.Implementations
 {
     public class EmailService : IEmailService
     {
         private readonly IInBoxRepository _InBoxRepository;
-        public EmailService(IInBoxRepository InBoxRepository)
+        private readonly IUserService _userService;
+        public EmailService(IInBoxRepository InBoxRepository, IUserService userService)
         {
             _InBoxRepository = InBoxRepository;
+            _userService = userService;
         }
-        public async Task<IBaseResponse<InBox>> CreateNewInBox(EmailModel email)
+
+        public async Task<IBaseResponse<inBox>> CreateNewInBox(EmailModel email)
         {
-            var baseResponse = new BaseResponse<InBox>();
+            var baseResponse = new BaseResponse<inBox>();
             try
             {
-                var NewEmail = new InBox
+                var _userId = await _userService.GetUserByFNameLame(email.emailTo);
+                int newId;
+                if (_userId.statusCode == StatusCode.internalServiceError)
                 {
-                    Email_date = email.Email_date,
-                    Email_from = email.Email_from,
-                    Email_to = email.Email_to,
-                    Email_body = email.Email_body,
-                    Email_subject = email.Email_subject,
+                    newId = 1;
+                }
+                else
+                {
+                    newId = _userId.Data.id;
+                }
+                var newInbox = new inBox
+                {
+                    userId = newId,
+                    emailDate = email.emailDate,
+                    emailFrom = email.emailFrom,
+                    emailTo = email.emailTo,
+                    emailBody = email.emailBody,
+                    emailSubject = email.emailSubject,
                 };
-                bool request = await _InBoxRepository.Create(NewEmail);
+                bool request = await _InBoxRepository.Create(newInbox);
                 if (!request)
                 {
-                    baseResponse.statusCode = StatusCode.InternalServiceError;
-                    baseResponse.Description = $"A try to store new email with id {NewEmail.Id} failed";
+                    baseResponse.Data = newInbox;
+                    baseResponse.statusCode = StatusCode.internalServiceError;
+                    baseResponse.Description = $"Не удалось отправить письмо адресованное пользователю [ {newInbox.emailTo} ].\n";
                     return baseResponse;
                 }
-                baseResponse.Description = $"A try to store new email with id {NewEmail.Id} succesful";
+                baseResponse.Data = newInbox;
+                baseResponse.Description = $"Письмо адресованное пользователю [ {newInbox.emailTo} ] успешно доставлено.\n{_userId.Description}";
                 baseResponse.statusCode = StatusCode.ok;
                 return baseResponse;
             }
             catch (Exception ex)
             {
-                return new BaseResponse<InBox>() { Description = ex.Message };
+                return new BaseResponse<inBox>() { Description = ex.Message };
             }
         }  
+        
     }
 }
