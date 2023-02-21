@@ -3,6 +3,7 @@ using System.Text;
 
 namespace DocvisionTestTask.Domain.Extensions
 {
+    //Хешируем пароль по стандарту SHA256
     public static class HashPassword
     {
         public static string Hash(this string password)

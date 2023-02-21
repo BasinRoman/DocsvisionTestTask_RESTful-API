@@ -3,7 +3,6 @@ using Business.Interfaces;
 using DocvisionTestTask.DAL;
 using DocvisionTestTask.DAL.Interfaces;
 using DocvisionTestTask.DAL.Repositories;
-using DocvisionTestTask.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,9 +33,11 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 var app = builder.Build();
+
+// БД
 using var scope = app.Services.CreateScope();
 ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-dbContext.Database.EnsureCreated();
+dbContext.Database.EnsureCreated(); // для формирования исходных данных и валидации существования БД с указанными настройками.
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

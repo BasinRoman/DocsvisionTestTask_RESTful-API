@@ -2,17 +2,18 @@
 
 namespace DocvisionTestTask.Domain.Entity
 {
+    // Описание сущности для таблицы БД Profile
     public class Profile
     {
         public int Id { get; set; } 
         
-        public string First_name { get; set; } = "Имя не заполнено";
-        public string Last_name { get; set; } = "Фпмилия не заполнено";
-        public string Sure_name { get; set; } = "Отчество не заполнено";
+        public string firstName { get; set; } = "Имя не заполнено";
+        public string lastName { get; set; } = "Фамилия не заполнено";
+        public string sureName { get; set; } = "Отчество не заполнено";
         public string Email { get; set; } = "Email не заполнен";
 
         //Foreign key
-        public int UserId { get; set; }
+        public int userId { get; set; }
         public User User { get; set; }
     }
 }

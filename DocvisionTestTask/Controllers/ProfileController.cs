@@ -1,5 +1,4 @@
-﻿using Business.Implementations;
-using Business.Interfaces;
+﻿using Business.Interfaces;
 using DocvisionTestTask.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
@@ -11,19 +10,23 @@ namespace DocvisionTestTask.Controllers
     public class ProfileController : Controller
     {
         private readonly IProfileService _profileService;
+
         public ProfileController(IProfileService profileService)
         {
             _profileService = profileService;
         }
 
         //Получаем список всех записей таблицы Profiles
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProfileModel>))]
         [HttpGet]
         public IActionResult GetProfiles()
         {
             var response = _profileService.GetAllProfiles();
-            return Ok(response.ToJson());
+            if (response.statusCode == Domain.Response.StatusCode.ok)
+            {
+                return Ok(response.ToJson());
+            }
+            return BadRequest("Не удалось получить список профилей");
         }
     }
 }

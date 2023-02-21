@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DocvisionTestTask.Domain.Entity
 {
+    // Описание сущности для таблицы БД User
     public class User
     {
-        
         public int id { get; set; }
         
         public string Login { get; set; }

@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace DocsvisionUnitTest
 {
-    
+
     public class EmailServiceTests
     {
         [Fact]

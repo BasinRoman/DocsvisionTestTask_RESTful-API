@@ -25,9 +25,9 @@ namespace Business.Implementations
                 foreach (var Profile in ProfileCollection)
                 {
                     result.Add(new ProfileModel {
-                        firstName = Profile.First_name,
-                        lastName = Profile.Last_name,
-                        Id= Profile.UserId,
+                        firstName = Profile.firstName,
+                        lastName = Profile.lastName,
+                        Id= Profile.userId,
                     });
                 }
                 baseResponse.Data = result;
