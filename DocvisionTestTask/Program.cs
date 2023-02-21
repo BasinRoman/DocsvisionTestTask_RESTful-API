@@ -4,52 +4,74 @@ using DocvisionTestTask.DAL;
 using DocvisionTestTask.DAL.Interfaces;
 using DocvisionTestTask.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 
-var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Путь к базе будет храниться в appsettings.json
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
 
-// Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+try
 {
-    options.LogTo(Console.WriteLine);
-    options.UseSqlServer(connectionString);
-});
+    var builder = WebApplication.CreateBuilder(args);
 
+    builder.Logging.ClearProviders();
+    builder.Host.UseNLog();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Путь к базе будет храниться в appsettings.json
 
-// DI repository
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddScoped<IInBoxRepository, InBoxRepository>();
+    // Add services to the container.
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.LogTo(Console.WriteLine);
+        options.UseSqlServer(connectionString);
+    });
 
-// DI services
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
+    // DI repository
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+    builder.Services.AddScoped<IInBoxRepository, InBoxRepository>();
 
-var app = builder.Build();
+    // DI services
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IProfileService, ProfileService>();
+    builder.Services.AddScoped<IEmailService, EmailService>();
 
-// БД
-using var scope = app.Services.CreateScope();
-ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-dbContext.Database.EnsureCreated(); // для формирования исходных данных и валидации существования БД с указанными настройками.
+    var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+    // БД
+    using var scope = app.Services.CreateScope();
+    ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated(); // для формирования исходных данных и валидации существования БД с указанными настройками.
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+
+}
+catch (Exception exception)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
+    logger.Error(exception, "Stopped program because of exception");
+    throw;
+}
+finally
+{
+    NLog.LogManager.Shutdown();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
